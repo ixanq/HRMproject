@@ -5,7 +5,7 @@
   Time: 7:40
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false"%>
 <html>
   <head>
     <title>登录界面</title>
@@ -15,7 +15,7 @@
         display: none;
       }
     </style>
-    <script src="/bootstrap/js/jquery-1.7.2.js"></script>
+    <script src="${pageContext.request.contextPath}/bootstrap/js/jquery-1.7.2.js"></script>
     <script>
 
         $(function(){
@@ -26,12 +26,12 @@
                 $.post(url,args,function(data){
                     if(data=="no"){
                         //用户名存在
-                        alert("不能注册");
-                        $("#nameWarning").eq(1).innerHTML="账号已存在"
+                        $("#nameWarning").text("账号已存在").css("display","inline");
                         $("#nameWarning ").css("color","red");
                         $(":submit").attr("disabled",true);
                     }else{
-                        alert("可以注册");
+                    	$("#nameWarning").text("可以注册").css("display","inline");
+                        $("#nameWarning ").css("color","green");
                         //按钮禁用
                         $(":submit").attr("disabled",false);
                     }

@@ -26,15 +26,7 @@ public class VisitorController {
 
     @RequestMapping("visitorRegist")
     public String login(Visitor visitor, Model model){
-        Visitor visitor1 = visitorService.findByName(visitor.getName());
-        if(null==visitor1){
-            visitorService.add(visitor);
-                model.addAttribute("visitor",visitor);
-                return "success";
-        }else{
-            model.addAttribute("exist","exist");
-            return "forward:/index.jsp";
-        }
-
+       visitorService.add(visitor);
+       return "forward:/visitor/visitorLogin";
     }
 }
