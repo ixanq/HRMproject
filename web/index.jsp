@@ -8,11 +8,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false"%>
 <html>
   <head>
-    <title>登录界面</title>
+    <title>注册界面</title>
+	<base href="${pageContext.request.contextPath}/">
     <style>
       .warning{
         color: red;
         display: none;
+      }
+
+      #ahref{
+      margin: 0 20 10 70%;
+        background-position: left;
       }
     </style>
     <script src="${pageContext.request.contextPath}/bootstrap/js/jquery-1.7.2.js"></script>
@@ -26,13 +32,14 @@
                 $.post(url,args,function(data){
                     if(data=="no"){
                         //用户名存在
+                         console.log("用户名已存在");
                         $("#nameWarning").text("账号已存在").css("display","inline");
                         $("#nameWarning ").css("color","red");
                         $(":submit").attr("disabled",true);
                     }else{
+                    	console.log("可以注册");
                     	$("#nameWarning").text("可以注册").css("display","inline");
                         $("#nameWarning ").css("color","green");
-                        //按钮禁用
                         $(":submit").attr("disabled",false);
                     }
                 })
@@ -46,6 +53,7 @@
                 var password2=$("input").eq(2).val();
 
                 if(name==""){
+                	$("#nameWarning").text("名字不能为空").css("color","red");
                     $(".warning").eq(0).css("display","inline");
                     return false;
                 }else {
@@ -69,6 +77,8 @@
   </head>
   <body bgcolor="#bdb76b">
 
+  <div id="ahref"><a href="#">管理员登录</a></div>
+
     <form action="visitorRegist" method="post" >
       <table bgcolor="lime" border="2px" align="center">
         <tr>
@@ -79,13 +89,13 @@
 
         <tr>
           <td>密&nbsp;码：</td>
-          <td><input id="password1" type="password" name="password"></td>
+				<td><input id="password1" type="password" name="password"></td>`
           <td><span id="password1Warning" class="warning">密码不能为空</span></td>
         </tr>
 
         <tr>
           <td>密码确认：</td>
-          <td><input id="password2" type="password" name="password"></td>
+          <td><input id="password2" type="password"></td>
           <td><span id="password2Warning" class="warning">密码不一致</span></td>
         </tr>
 
