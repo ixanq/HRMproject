@@ -39,5 +39,8 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" exported="" scope="PROVIDED" name="Tomcat 9.0.11" level="application_server_libraries" />
+    <orderEntry type="library" name="org.json_by_lanying" level="project" />
+    <orderEntry type="library" name="fastjson-1.2.2" level="project" />
   </component>
 </module>
