@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="org.json_by_lanying">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/org.json_by_lanying.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

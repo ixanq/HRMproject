@@ -1,24 +1,34 @@
 package com.ixanq.controller;
 
-import com.ixanq.entity.Department;
-import com.ixanq.entity.Manager;
-import com.ixanq.entity.Resume;
-import com.ixanq.entity.ResumeForManager;
+import com.ixanq.entity.*;
 import com.ixanq.service.ManagerService;
 import com.ixanq.service.VisitorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Controller
 public class ManagerController {
     @Autowired
     private ManagerService managerService;
+
+    @InitBinder
+    public void initBinder(ServletRequestDataBinder binder){
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"),
+                true));
+    }
+
 
     /**
      * 用异步ajax 验证管理员存不存在
@@ -52,8 +62,12 @@ public class ManagerController {
             return "forward:/adminLogin.jsp";
         } else if(null!=manager3) {//账号密码正确
             List<ResumeForManager> resumes=managerService.findResumeByStatus("未读");
+            List<GoInterview> goInterviews=managerService.findGoInterviewByStatus("未读");
             if(null!=resumes&&resumes.size()!=0){
                 model.addAttribute("thereAreMesseges","thereAreMesseges");
+            }
+            if(null!=goInterviews&&goInterviews.size()!=0){
+                model.addAttribute("thereAregoInterviewsMesseges","thereAregoInterviewsMesseges");
             }
             managerSession.setAttribute("manager",manager2);
             return "manager/managerIndexNav";
@@ -115,9 +129,16 @@ public class ManagerController {
      * @param model
      * @return
      */
-    @RequestMapping("mmanageResume")
+    @RequestMapping("manageAdvertise")
     public String manageResume(Manager manager, Model model){
-        return "manager/manageResume";
+        List<Advertises> advertises = managerService.finaAllAdvertise();
+        if(advertises==null||advertises.size()==0){
+            model.addAttribute("manageAdvertiseEmpty",11);
+            return "manager/managerIndexNav";
+        }else {
+            model.addAttribute("advertises",advertises);
+        return "manager/advertise";
+        }
     }
 
     /**
@@ -204,6 +225,96 @@ public class ManagerController {
         managerService.deleteResumeForManagerById(id);
         return "yes";
     }
+
+    @RequestMapping("addAdvertisesforAdmin")
+    public String addAdvertisesforAdmin( ){
+        return "manager/addAdvertise";
+    }
+
+    @RequestMapping("addAdvertiseAndCommit")
+    public String addAdvertiseAndCommit(String advertiseName,String salary,Integer needPersonNumber, String advertiseDescreption,Model model){
+        Advertises advertises=new Advertises(advertiseName,salary,needPersonNumber,advertiseDescreption);
+        System.out.println(advertiseDescreption);
+        managerService.addAdvertise(advertises);
+        model.addAttribute("addAdvertiseAndCommit",333);
+        return "manager/managerIndexNav";
+    }
+
+    @RequestMapping("lookTheAdvertiseDetailMasseges")
+    public String lookTheAdvertiseDetailMasseges(String id,Model model){
+        Integer newId = Integer.valueOf(id);
+        if(newId==null){
+            model.addAttribute("lookTheAdvertiseDetailMasseges",11);
+            return "manager/managerIndexNav";
+        }else{
+            Advertises advertises = managerService.findAdvertisesById(newId);
+            if(advertises==null){
+                model.addAttribute("noadvertises",11);
+                return "manager/managerIndexNav";
+            }
+            model.addAttribute("advertises",advertises);
+        return "manager/showAdvertise";
+        }
+
+    }
+
+    @RequestMapping("ajaxDeleteAdvertiseById")
+    @ResponseBody
+    public String ajaxDeleteAdvertiseById(Integer id){
+        managerService.deleteAdvertiseById(id);
+        return "deleteSeccessfully";
+    }
+
+    @RequestMapping("interviewforVisitor")
+    public String interviewforVisitor(String visitorName, String advertiseId, Date viewTime, Model model){
+        Integer advertiseId1 = Integer.valueOf(advertiseId);
+        Interview interview=new Interview(visitorName,advertiseId1,viewTime);
+        System.out.println(interview);
+        Interview interview1 =managerService.findInterviewforVisitorByVisitorName(interview.getVisitorName());
+        if(interview1!=null){
+            model.addAttribute("visitorViewxist",88);
+            return "manager/managerIndexNav";
+        }
+       managerService.addInterviewforVisitor(interview);
+        model.addAttribute("visitorViewSeccessfully",99);
+        return "manager/managerIndexNav";
+    }
+
+    @RequestMapping("lookAllGoInterview")
+    public String lookAllGoInterview(Model model){
+        List<GoInterview> goInterviews= managerService.findAllGoInterview();
+        if(goInterviews==null||goInterviews.size()==0){
+            model.addAttribute("goInterviewsMessegesEmpty",88);
+            return "manager/managerIndexNav";
+        }else{
+            model.addAttribute("goInterviews",goInterviews);
+            return "manager/showGoInterview";
+        }
+    }
+
+
+    @RequestMapping("lookTheGoInterviewDetailsForAdmin")
+    public String lookTheGoInterviewDetailsForAdmin(String id,Model model){
+        Integer gointerviewId = Integer.valueOf(id);
+        GoInterview goInterview=managerService.findGoInterviewByGointerviewId(gointerviewId);
+        //Todo 要写录用未录用，查看游客请求的信息，如果录用，保存游客的信息到员工。
+        List<GoInterview> goInterviews= managerService.findAllGoInterview();
+        if(goInterviews==null||goInterviews.size()==0){
+            model.addAttribute("goInterviewsMessegesEmpty",88);
+            return "manager/managerIndexNav";
+        }else{
+            model.addAttribute("goInterviews",goInterviews);
+            return "manager/showGoInterview";
+        }
+    }
+
+
+
+
+
+
+
+
 
 
 }
