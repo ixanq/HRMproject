@@ -1,13 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page import="com.ixanq.entity.Visitor"%>
-<%@ page import="com.ixanq.entity.Employee" %>
+<%@ taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" isELIgnored="false"%>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>部门职位</title>
+    <title>员工信息</title>
     <style>
         body{
             width: 100%;
@@ -16,12 +15,12 @@
             background-repeat: repeat;
         }
         #head{
-            width: 70%;
+            width: 90%;
             margin: 20px auto;
             text-align: center;
             font-size: 18px;
             text-decoration-color: #677985;
-            background-color: #67b168;
+            background-color: #d9534f;
         }
         tr,td{
             text-align: center;
@@ -31,24 +30,36 @@
 </head>
 <body>
 <%@include file="employeeBaseNav.jsp" %>
-    <div id="head">
-        <table border="2px"  align="center" style="background-color: green;width: 65%">
+
+<div id="head">
+    <div style="text-align: center;margin: 0 auto;font-size: 22px">查询结果</div>
+
+        <table width="80%" border="2px" cellpadding="0" cellspacing="0" style="background-color: #00aFFF" align="center">
+            <input type="hidden" name="employeeId" value="${requestScope.employee1.id}">
             <tr>
                 <td>ID</td>
-                <td>部门名称</td>
-                <td>查看职位</td>
+                <td>姓名：</td>
+                <td>性别：</td>
+                <td>Email：</td>
             </tr>
-            <c:forEach items="${requestScope.allDepartment}" var="department">
+            <c:forEach items="${requestScope.employees}" var="employee">
                 <tr>
-                    <td>${department.id}</td>
-                    <td>${department.name}</td>
-                    <td><a href="${pageContext.request.contextPath}/lookDepartmentWorkPosirionInEmployee?departmentId=${department.id}">查看职位</a></td>
+                    <td>${employee.id}</td>
+                    <td>${employee.realName}</td>
+                    <td>${employee.gender}</td>
+                    <td>${employee.email}</td>
                 </tr>
             </c:forEach>
+            <c:if test="${empty requestScope.employees}">
+                <tr>
+                    <td colspan="4">暂无查询结果</td>
+                </tr>
+            </c:if>
             <tr>
                 <td colspan="4"><a href="javaScript:history.back(-1);">返回</a></td>
             </tr>
         </table>
-    </div>
+
+</div>
 </body>
 </html>

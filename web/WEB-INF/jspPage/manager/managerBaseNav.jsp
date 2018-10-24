@@ -49,12 +49,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav" id="ul1">
-                <li class="active"><a href="${pageContext.request.contextPath}/mworkAtendance">查看考勤 <span class="sr-only">(current)</span></a></li>
                 <li><a href="${pageContext.request.contextPath}/mmanageEmployee">员工管理</a></li>
-                <li><a href="${pageContext.request.contextPath}/mmanageDepartment">部门管理</a></li>
-                <li><a href="${pageContext.request.contextPath}/mmanageWorkPosition">职位管理</a></li>
-
-                <%--<li><a href="${pageContext.request.contextPath}/manageAdvertise">招聘管理</a></li>--%>
+                <li><a href="${pageContext.request.contextPath}/mmanageDepartment">部门职位管理</a></li>
 
                 <li><a href="${pageContext.request.contextPath}/mmanageTrain">培训管理</a></li>
                 <li><a href="${pageContext.request.contextPath}/lookAndDeleteResume">简历中心</a></li>
@@ -75,30 +71,23 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">财务管理 <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="writeResume"></a></li>
-                        <li><a href="${pageContext.request.contextPath}/mmanageSalary">薪资管理</a></li>
-                        <li><a href="${pageContext.request.contextPath}/mmanageReward">奖惩管理</a></li>
+                        <li><a href="${pageContext.request.contextPath}/mmanageEmployee">发放薪资</a></li>
+
+                        <li><a href="${pageContext.request.contextPath}/mworkAtendance">查看薪资发放记录</a></li>
+                        <li><a href="${pageContext.request.contextPath}/mworkAtendance">查看奖惩记录</a></li>
+                        <li><a href="${pageContext.request.contextPath}/mworkAtendance">查看考勤 <span class="sr-only">(current)</span></a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#"></a></li>
                         <li role="separator" class="divider"></li>
                     </ul>
                 </li>
             </ul>
-            <%--<form class="navbar-form navbar-left">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
-                </div>
-                <button type="submit" class="btn btn-default">Submit</button>
-            </form>--%>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">反馈</a></li>
+                <li><a href="${pageContext.request.contextPath}/reconsiderManagement">回馈信息</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">设置 <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">修改密码</a></li>
-                        <li><a href="#">退出</a></li>
-                        <li><a href="#">其他</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#"></a></li>
+                        <li><a href="${pageContext.request.contextPath}/managerSignOut">退出</a></li>
                     </ul>
                 </li>
             </ul>

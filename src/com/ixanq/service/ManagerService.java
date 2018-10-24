@@ -90,4 +90,55 @@ public interface ManagerService {
     List<GoInterview> findAllGoInterview();
 
     GoInterview findGoInterviewByGointerviewId(Integer gointerviewId);
+
+    List<ResumeForManager>  findResumeForManagerByVisitorName(String name);
+
+    void updateGoInterview(GoInterview goInterview1);
+
+    List<EmployeeInfo> findEmployeeInfoByworkPositionId(Integer workPositionId);
+
+    EmployeeInfo findEmployeeInfoByDepartmentId(Integer departmentId);
+
+    List<EmployeeInfo> findAllEmployeeInfo();
+
+    Employee findEmployeeByVisitorName(String name);
+
+    void addEmployeeInfo(EmployeeInfo employeeInfo);
+
+    EmployeeInfo findEmployeeInfoByEmployeeId(Integer employeeId);
+
+    void updateEmployeeInfo(EmployeeInfo eInfo);
+
+    void deleteGoInterviewById(Integer id);
+
+    void deleteWorkPositionByDepartmentId(Integer departmentId);
+
+    List<Reward> findRewardByEmployeeId(Integer employeeId1);
+
+    Train findTrainByDepartmentName(String department);
+
+    List<CheckWorkAttendance> findCheckWorkAttendanceLikeDate(String stringMonth1);
+
+    List<CheckWorkAttendance> findAllCheckWorkAttendanceByEIdAndByMonth(Integer employeeId, String monthLike);
+
+    List<Reward> findRewardByEmployeeIdAndByMonthLike(Integer employeeId1, String monthLike);
+
+    Salary findSalaryByEIdAndByYearAndByMonth(Integer employeeId1, int year, int month);
+
+    List<Salary> findSalaryByEmployeeId(Integer id,Integer month,Integer year);
+
+
+    List<Reward> findAllRewardByEId(Integer id, Integer month, Integer year);
+
+    List<CheckWorkAttendance> findAllCheckWorkAttendanceByEIdMonthYear(Integer id, Integer month, Integer year);
+
+    List<Reconsider> findAllReconsider();
+
+    List<Reconsider> findAllReconsiderMessegess();
+
+    Reconsider findReconsiderById(Integer id);
+
+    void deleteReconsiderById(Integer id);
+
+    List<Employee> findAllEmployeeRealNameLike(String name);
 }

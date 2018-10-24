@@ -2,17 +2,25 @@ package com.ixanq.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.ixanq.entity.*;
+import com.ixanq.service.EmployeeService;
 import com.ixanq.service.ManagerService;
 import com.ixanq.service.VisitorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpSession;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -21,6 +29,14 @@ public class VisitorController {
     private VisitorService visitorService;
     @Autowired
     private ManagerService managerService;
+    @Autowired
+    private EmployeeService employeeService;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder, WebRequest request){
+        DateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd");
+        binder.registerCustomEditor(Date.class,new CustomDateEditor(dateFormat,true));
+    }
 
 
     /**
@@ -69,12 +85,18 @@ public class VisitorController {
      */
     @RequestMapping("visitorNav")
     public String visitorNav(String name,String password, Model model,HttpSession session){
-       Visitor visitor2=visitorService.findByName(name);//ÅÐ¶ÏÃû×ÖÊÇ·ñÎª´íÎó
+        Employee employeeByNameAndPassword = employeeService.findEmployeeByNameAndPassword(name, password);
+        if(employeeByNameAndPassword!=null){
+            model.addAttribute("typeError","typeError");
+            return "forward:/visitorLogin.jsp";
+        }
+        Visitor visitor2=visitorService.findByName(name);//ÅÐ¶ÏÃû×ÖÊÇ·ñÎª´íÎó
        Visitor visitor3=visitorService.findByNameAndPassword(name,password);
        if(null==visitor2) {//Ãû×Ö´íÎó
     	   model.addAttribute("nameError","nameError");
     	   return "forward:/visitorLogin.jsp";
        } else if(null!=visitor3) {//ÕËºÅÃÜÂëÕýÈ·
+           session.removeAttribute("visitor");
     	   session.setAttribute("visitor", visitor2);
            System.out.println("session:"+visitor2);
            Interview byVisitorName = managerService.findInterviewforVisitorByVisitorName(visitor2.getName());
@@ -175,6 +197,8 @@ public class VisitorController {
         }else{
             model.addAttribute("resumeByVisitorName",resumeByVisitorName);
             List<Department> allDepartment = managerService.findAllDepartment();
+            WorkPosition workPosition = managerService.findWorkPositionById(resumeByVisitorName.getWorkPositionId());
+            model.addAttribute("workPosition",workPosition);
             model.addAttribute("allDepartment",allDepartment);
             return "visitor/updateResume";
         }
@@ -213,7 +237,7 @@ public class VisitorController {
                     r.getSalary(),r.getDepartmentId(),r.getWorkPositionId(),r.getMaster(),r.getWorkBackground(),
                     r.getHobbies(),"Î´¶Á");
             System.out.println(resumeForManager);
-            ResumeForManager resumeForManager1=visitorService.findResumeForManagerByAdvertiseId(advertiseId);
+            ResumeForManager resumeForManager1=visitorService.findResumeForManagerByAdvertiseIdAndVisitorName(advertiseId,visitor.getName());
             if(resumeForManager1!=null){
                 model.addAttribute("resumeForManagerIsExist","111");
                 return "visitor/visitorIndexNav";
@@ -275,6 +299,7 @@ public class VisitorController {
         Integer interviewId = Integer.valueOf(id);
         GoInterview goInterview=new GoInterview(visitor.getName(),"Î´¶Á","´ý¶¨");
         visitorService.addGoInterview(goInterview);
+        model.addAttribute("pleaseWaitThegotoInterviewResult",11);
         return "visitor/visitorIndexNav";
     }
 

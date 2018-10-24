@@ -6,7 +6,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>招聘信息</title>
+    <title>面试请求</title>
     <style>
         .head{
             width: 100%;
@@ -32,48 +32,45 @@
     </script>
 </head>
 <body>
-<%@include file="baseNav.jsp"%> <!-- 相同目录下路径不用写 -->
+<%@include file="managerBaseNav.jsp"%> <!-- 相同目录下路径不用写 -->
 
 <div class="head">
     <title class="center">
-        <strong>招聘信息</strong>
+        <strong>面试请求</strong>
     </title>
     <div class="center">
         <form action="${pageContext.request.contextPath}/addAdvertiseAndCommit" method="post">
             <td width="730" height="800" align="center" valign="top" bgcolor="#00FF99">
                 <table width="730" height="400" border="2px" cellpadding="0" cellspacing="0" style="background-color: #00aFFF">
                     <tr align="center">
-                        <td colspan="6" bgcolor="#00FFFF"><strong>招聘信息</strong></td>
+                        <td colspan="6" bgcolor="#00FFFF"><strong>面试请求信息</strong></td>
                     </tr>
 
                     <tr>
                         <td>ID</td>
-                        <td>${requestScope.advertises.id}</td>
+                        <td>${requestScope.goInterview.id}</td>
                     </tr>
 
                     <tr>
                         <td>名称</td>
-                        <td>${requestScope.advertises.advertiseName}</td>
+                        <td>${requestScope.goInterview.visitorName}</td>
                     </tr>
 
                     <tr>
-                        <td>薪资</td>
-                        <td>${requestScope.advertises.salary}</td>
-                    </tr>
-
-
-                    <tr>
-                        <td>需要人数</td>
-                        <td>${requestScope.advertises.needPersonNumber}</td>
+                        <td>查看状态</td>
+                        <td>${requestScope.goInterview.viewStatus}</td>
                     </tr>
 
 
                     <tr>
-                        <td>职位描述</td>
-                        <td>${requestScope.advertises.advertiseDescreption}</td>
+                        <td>录用状态</td>
+                        <td>${requestScope.goInterview.passStatus}</td>
                     </tr>
+
+
                     <tr>
-                        <td colspan="2"><a href="javaScript:history.back(-1);">返回</a></td>
+                        <td><a href="${pageContext.request.contextPath}/changeToEmployee?name=${requestScope.goInterview.visitorName}&&id=${requestScope.goInterview.id}">录用</a></td>
+                        <td><a href="${pageContext.request.contextPath}/refuseToChangeEmployee?id=${requestScope.goInterview.id}">不录用</a></td>
                     </tr>
 
 

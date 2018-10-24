@@ -10,8 +10,17 @@ public class CheckWorkAttendance {
 	private Date endWork;//下班时间
 	private String isLate;//是否迟到
 	private String isLeave;//是否早退
+    private String isDeleted;//是否被删
 
 	public CheckWorkAttendance() {
+	}
+
+	public CheckWorkAttendance(Integer employeeID, Date beginWork, Date endWork, String isLate, String isLeave) {
+		this.employeeID = employeeID;
+		this.beginWork = beginWork;
+		this.endWork = endWork;
+		this.isLate = isLate;
+		this.isLeave = isLeave;
 	}
 
 	public CheckWorkAttendance(Integer id, Integer employeeID, Date beginWork, Date endWork, String isLate, String isLeave) {

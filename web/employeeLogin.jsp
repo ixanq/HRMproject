@@ -24,6 +24,14 @@
            margin: 0px 20px 10px 70%;
            background-position: left;
        }
+         .center{
+             width: 50%;
+             margin:20px auto;
+             text-align: center;
+             font-size: 30px;
+             background-color: #c0a160;
+             color: red;
+         }
 
     </style>
      <script src="${pageContext.request.contextPath}/bootstrap/js/jquery-1.7.2.js"></script>
@@ -85,6 +93,11 @@
     <div id="ahref"><a href="adminLogin.jsp">管理员登录</a></div>
     <div class="ahref"><a href="visitorLogin.jsp">游客登录</a></div>
 	  <form action="${pageContext.request.contextPath}/employeeNav" method="post" >
+          <div class="center">
+              <c:if test="${requestScope.isLeave!=null}">
+                  您已经不是该公司员工，无法登陆！<br>
+              </c:if>
+          </div>
           <div id="head">员工登录</div>
       <table bgcolor="gray" border="2px" align="center">
         <tr>
