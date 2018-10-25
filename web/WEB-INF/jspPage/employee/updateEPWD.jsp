@@ -1,5 +1,6 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" isELIgnored="false"%>
+         pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <head>
     <title>修改密码</title>
@@ -12,8 +13,10 @@
             background-repeat: repeat;
         }
         .head{
-            width: 100%;
-            height: 85%;
+            width: 60%;
+            margin: 10px auto;
+            background-color: #c0a16b;
+
 
         }
         .warning{
@@ -38,12 +41,12 @@
     <script>
         $(function(){
             $("form").submit(function(){
-                var name=$("input").eq(0).val();
-                var password1=$("input").eq(1).val();
-                var password2=$("input").eq(2).val();
+                var password=$("#password").val();
+                var password1=$("#password1").val();
+                var password2=$("#password2").val();
 
-                if(name==""){
-                    $("#nameWarning").text("密码不能为空").css("color","red");
+                if(password==""||password==null){
+                    $("#passwordWarning").text("密码不能为空").css("color","red");
                     $(".warning").eq(0).css("display","inline");
                     return false;
                 }else {
@@ -67,20 +70,25 @@
 </head>
 <body bgcolor="#bdb76b">
     <%@include file="employeeBaseNav.jsp" %>
+    ${requestScope.originPasswordError}
     <div class="head">
         <form action="${pageContext.request.contextPath}/updatePWDandCommit" method="post" >
             <div id="div1">修改密码</div>
             <table bgcolor="lime" border="2px" align="center">
                 <tr>
                     <td>原始密码：</td>
-                    <td><input id="name" type="text" name="oPassword"></td>
-                    <td><span id="nameWarning" class="warning">密码不能为空</span></td>
+                    <td><input id="password" type="password" name="oPassword"></td>
+                    <td>
+                        <span id="passwordWarning" style="display: inline;" class="warning">
+                            <c:if test="${requestScope.originPasswordError!=null}">密码错误</c:if>
+                        </span>
+                     </td>
                 </tr>
 
                 <tr>
                     <td>新密码：</td>
                     <td><input id="password1" type="password" name="password"></td>`
-                    <td><span id="password1Warning" class="warning">密码不能为空</span></td>
+                    <td><span id="password1Warning" class="warning">新密码不能为空</span></td>
                 </tr>
 
                 <tr>

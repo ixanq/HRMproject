@@ -227,9 +227,7 @@ public class EmployeeController {
         }
         //2017-12-12 12:12:12
         String stringDate=dateString.substring(0,11);//2017-12-12
-        Integer day = Integer.valueOf(dateString.substring(8, 10));
         Integer hour = Integer.valueOf(dateString.substring(11, 13));
-        Integer min = Integer.valueOf(dateString.substring(14, 16));
 
         CheckWorkAttendance beginwork=employeeService.findCheckWorkAttendanceByEIdAndBeginStringDateLike(employee.getId(),"%"+stringDate+"%");
         CheckWorkAttendance workAttendance=employeeService.findCheckWorkAttendanceByEIdAndEndStringDateLike(employee.getId(),"%"+stringDate+"%");
@@ -237,6 +235,12 @@ public class EmployeeController {
             model.addAttribute("youHaveAlreadyLeaveWorkAtendance",11);
             return "employee/workAttandance";
         }else if(beginwork!=null){
+            if(beginwork.getIsLate().equals("旷工)")){
+                managerService.addReward(new Reward(employee.getId(),"旷工",-250,date1));
+                employeeService.updateCheckWorkAttendance(new CheckWorkAttendance(beginwork.getId(),employee.getId(),beginwork.getBeginWork(),date1,beginwork.getIsLate(),"旷工"));
+                model.addAttribute("WorkAtendanceLeveIsInTime",11);
+                return "employee/workAttandance";
+            }
             if(hour>=18){
                 employeeService.updateCheckWorkAttendance(new CheckWorkAttendance(beginwork.getId(),employee.getId(),beginwork.getBeginWork(),date1,beginwork.getIsLate(),"正常"));
                 model.addAttribute("WorkAtendanceLeveIsInTime",11);
@@ -247,7 +251,7 @@ public class EmployeeController {
                 model.addAttribute("WorkLeaveAtendanceIsBefore",(18-hour));
                 return "employee/workAttandance";
             }else{
-                managerService.addReward(new Reward(employee.getId(),"早退"+(18-hour)+"小时",-200,date1));//在15点之前签退扣200
+                managerService.addReward(new Reward(employee.getId(),"早退"+(18-hour)+"小时",-250,date1));//在15点之前签退扣205
                 employeeService.updateCheckWorkAttendance(new CheckWorkAttendance(beginwork.getId(),employee.getId(),date1,date1,beginwork.getIsLate(),"旷工"));
                 model.addAttribute("WorkLeaveAtendanceIsSoEarly",11);
                 return "employee/workAttandance";
@@ -275,8 +279,10 @@ public class EmployeeController {
 
             model.addAttribute("updatePWDandCommit",44);
             return "employee/employeeIndexNav";
+        }else{
+            model.addAttribute("originPasswordError",11);
+            return "employee/updateEPWD";
         }
-        return "employee/updateEPWD";
     }
 
     @RequestMapping("personalSalaryMesseges")

@@ -63,8 +63,8 @@
                     <td>员工名称</td>
                     <td>上班时间</td>
                     <td>下班时间</td>
-                    <td>迟到</td>
-                    <td>早退</td>
+                    <td>上班</td>
+                    <td>下班</td>
                 </tr>
 
                 <c:forEach items="${requestScope.attendances}" var="attendance">
